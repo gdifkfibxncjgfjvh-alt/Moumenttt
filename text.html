@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تجربة Google Sign-In كاملة</title>
+    <!-- تحميل مكتبة Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <h1>مرحبًا بك في موقعي</h1>
+
+    <!-- محتوى صفحتك السابق -->
+    <p>هنا ضع أي محتوى تريده من صفحتك.</p>
+
+    <!-- زر تسجيل الدخول -->
+    <div id="g_id_onload"
+         data-client_id="1042159103129-7pc0h9ghass3m35lqd531babbfh7oven.apps.googleusercontent.com"
+         data-login_uri="https://eu.site.pro/v4.2/eNe5h/oauth2callback"
+         data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin" data-type="standard"></div>
+
+    <hr>
+    <h2>معالجة إعادة التوجيه (Callback)</h2>
+    <p>ستظهر هنا معلومات تسجيل الدخول بعد الضغط على الزر:</p>
+    <pre id="callbackOutput"></pre>
+
+    <script>
+        // تابع لمعالجة إعادة التوجيه إذا كان هناك authorization code
+        function handleCallback() {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            if(code) {
+                document.getElementById('callbackOutput').textContent = "تم تسجيل الدخول بنجاح! رمز التفويض:\n" + code;
+                console.log('Authorization code:', code);
+
+                // هنا يمكنك إرسال الكود لسيرفرك لاستبداله بـ access token
+                // fetch('server_endpoint', { method: 'POST', body: JSON.stringify({ code }) });
+            } else {
+                document.getElementById('callbackOutput').textContent = "لم يتم استلام أي رمز من Google.";
+            }
+        }
+
+        // تنفيذ المعالجة عند تحميل الصفحة
+        window.onload = handleCallback;
+    </script>
+</body>
+</html>
